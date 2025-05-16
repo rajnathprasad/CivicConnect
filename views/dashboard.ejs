@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/userDashboard.css">
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>Welcome, <%= user.name %>!</h1>
+        <div class="nav-links">
+            <a href="/profile">View/Edit Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+<form class="search-form" method="GET" action="/dashboard">
+  <input type="text" name="q" placeholder="Search schemes..." value="<%= typeof query !== 'undefined' ? query : '' %>" />
+  <button type="submit">Search</button>
+</form>
+
+<!-- Tab Buttons -->
+<div class="scheme-tabs">
+  <a href="/dashboard?view=for-you" class="tab-button <%= currentView === 'for-you' ? 'active' : '' %>">For You</a>
+  <a href="/dashboard?view=all" class="tab-button <%= currentView === 'all' ? 'active' : '' %>">All Schemes</a>
+</div>
+
+    <div class="scheme-list">
+        <% if (schemes && schemes.length > 0) { %>
+          <% schemes.forEach(scheme => { %>
+            <div class="scheme-card">
+              <% if (scheme.image) { %>
+                <img src="<%= scheme.image %>" alt="Scheme Image" class="scheme-thumbnail" />
+
+              <% } else { %>
+                <div style="height: 150px; background: #ccc; display: flex; align-items: center; justify-content: center;">
+                  <span>No Image</span>
+                </div>
+              <% } %>
+              <h3><%= scheme.schemeName %></h3>
+              <p><%= scheme.schemeDescription ? scheme.schemeDescription.substring(0, 100) + '...' : '' %></p>
+              <a href="/scheme/<%= scheme._id %>">View More</a>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No schemes available at the moment.</p>
+        <% } %>
+      </div>
+</body>
+</html>

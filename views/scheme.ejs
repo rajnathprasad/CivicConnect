@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= scheme.schemeName %></title>
+  <link rel="stylesheet" href="/css/scheme.css">
+</head>
+<body>
+  <div class="main-layout">
+    <div class="scheme-container">
+      <h1><%= scheme.schemeName %></h1>
+
+      <% if (scheme.videoLink) {
+        let videoId = "";
+        if (scheme.videoLink.includes("youtube.com/watch?v=")) {
+          videoId = scheme.videoLink.split("v=")[1].split("&")[0];
+        } else if (scheme.videoLink.includes("youtu.be/")) {
+          videoId = scheme.videoLink.split("youtu.be/")[1].split("?")[0];
+        } else if (scheme.videoLink.includes("youtube.com/shorts/")) {
+          videoId = scheme.videoLink.split("shorts/")[1].split("?")[0];
+        }
+        let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+      %>
+        <div class="video-container">
+          <iframe 
+            width="100%" 
+            height="315" 
+            src="<%= embedUrl %>" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      <% } %>
+
+      <p><%= scheme.schemeDescription %></p>
+
+      <hr>
+
+      <h3>Comments</h3>
+      <div class="comments-section">
+        <% if (scheme.comments.length > 0) { %>
+          <% scheme.comments.forEach(comment => { %>
+            <div class="comment">
+              <strong><%= comment.user %>:</strong>
+              <p><%= comment.content %></p>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No comments yet.</p>
+        <% } %>
+      </div>
+
+      <form class="comment-form" method="POST" action="/scheme/<%= scheme._id %>/comment">
+        <textarea name="content" placeholder="Add your comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+
+      <a class="back-link" href="/dashboard">← Back to Dashboard</a>
+    </div>
+
+    <div id="chat-container" class="chat-wrapper">
+      <h3>Ask about this scheme</h3>
+      <div id="chat-box"></div>
+      <input type="text" id="user-input" placeholder="Type your message..." />
+    </div>
+  </div>
+
+  <script>
+    const userName = "<%= user.name %>";
+    const schemeName = "<%= scheme.schemeName %>";
+    const schemeDescription = `<%= scheme.schemeDescription.replace(/"/g, '\\"') %>`;
+
+    const chatBox = document.getElementById('chat-box');
+    const input = document.getElementById('user-input');
+
+    const chatHistory = [
+      {
+        role: "system",
+        content: `You are an assistant that gives short replies. The user is ${userName}. The scheme is called "${schemeName}" and here is what it's about: "${schemeDescription}". Only respond concisely.`
+      }
+    ];
+
+    function addToChat(sender, text) {
+      const el = document.createElement('div');
+      el.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatBox.appendChild(el);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendToGemini(message) {
+      chatHistory.push({ role: "user", content: message });
+
+      const res = await fetch('/api/gemini-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatHistory })
+      });
+
+      const data = await res.json();
+      const reply = data.reply;
+      chatHistory.push({ role: "assistant", content: reply });
+      return reply;
+    }
+
+    (async () => {
+      const reply = await sendToGemini("Hello");
+      addToChat("TechSmiths", reply);
+    })();
+
+    input.addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter') {
+        const userMsg = input.value.trim();
+        if (!userMsg) return;
+        addToChat(userName, userMsg);
+        input.value = '';
+        const reply = await sendToGemini(userMsg);
+        addToChat("TechSmiths", reply);
+      }
+    });
+  </script>
+  <script src="/js/scheme.js"></script>
+</body>
+</html>

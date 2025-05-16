@@ -1,0 +1,126 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1e272e;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.edit-scheme-container {
+    background-color: #2c3e50;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+}
+
+h2 {
+    color: #81ecec;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+.edit-scheme-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    color: #f0f0f0;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Inputs */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="url"],
+.form-group textarea,
+.form-group select {
+    padding: 12px 16px;
+    border: 1px solid #4a5d73;
+    border-radius: 6px;
+    background-color: #34495e;
+    color: #f0f0f0;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Textarea specific */
+.form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* Select dropdown styling */
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+/* File input */
+.form-group input[type="file"] {
+    background-color: #34495e;
+    color: #f0f0f0;
+    border: none;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+/* Checkbox styling */
+.form-group input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 10px;
+}
+
+/* Submit button */
+button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #81ecec;
+    color: #2c3e50;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover {
+    background-color: #63cdda;
+    transform: scale(1.02);
+}
+
+/* Back link */
+.back-link {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.back-link a {
+    color: #a7b1bd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+    color: #f0f0f0;
+}

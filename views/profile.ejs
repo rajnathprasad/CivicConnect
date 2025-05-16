@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="/css/profile.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-header">
+    <h1>Your Profile</h1>
+    <div class="nav-links">
+      <a href="/dashboard">Back to Dashboard</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form method="POST" action="/user/profile" class="profile-form">
+      <!-- Editable Fields -->
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" value="<%= user.name %>" required />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" value="<%= user.email %>" required />
+
+      <label for="phone">Phone Number</label>
+      <input id="phone" name="phone" type="text" value="<%= user.phone %>" required />
+
+      <label for="aadhaar">Aadhaar Number</label>
+      <input id="aadhaar" name="aadhaar" type="text" value="<%= user.aadhaar %>" required />
+
+      <!-- Add More Fields -->
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender">
+        <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+        <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+        <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+      </select>
+
+      <label for="maritalStatus">Marital Status</label>
+      <select id="maritalStatus" name="maritalStatus">
+        <option value="single" <%= user.maritalStatus === 'single' ? 'selected' : '' %>>Single</option>
+        <option value="married" <%= user.maritalStatus === 'married' ? 'selected' : '' %>>Married</option>
+      </select>
+
+      <label for="income">Income</label>
+      <input id="income" name="income" type="number" value="<%= user.income %>" />
+
+      <label for="occupation">Occupation</label>
+      <input id="occupation" name="occupation" type="text" value="<%= user.occupation %>" />
+
+      <label for="educationLevel">Education Level</label>
+      <input id="educationLevel" name="educationLevel" type="text" value="<%= user.educationLevel %>" />
+
+      <label for="state">State</label>
+      <input id="state" name="state" type="text" value="<%= user.state %>" />
+
+      <label for="ruralOrUrban">Rural or Urban</label>
+      <select id="ruralOrUrban" name="ruralOrUrban">
+        <option value="rural" <%= user.ruralOrUrban === 'rural' ? 'selected' : '' %>>Rural</option>
+        <option value="urban" <%= user.ruralOrUrban === 'urban' ? 'selected' : '' %>>Urban</option>
+      </select>
+
+      <label for="hasGirlChild">Has Girl Child?</label>
+      <input type="checkbox" id="hasGirlChild" name="hasGirlChild" <%= user.hasGirlChild ? 'checked' : '' %> />
+
+      <label for="isFarmer">Is a Farmer?</label>
+      <input type="checkbox" id="isFarmer" name="isFarmer" <%= user.isFarmer ? 'checked' : '' %> />
+
+      <label for="isPregnantOrMother">Is Pregnant or a Mother?</label>
+      <input type="checkbox" id="isPregnantOrMother" name="isPregnantOrMother" <%= user.isPregnantOrMother ? 'checked' : '' %> />
+
+      <label for="isDisabled">Is Disabled?</label>
+      <input type="checkbox" id="isDisabled" name="isDisabled" <%= user.isDisabled ? 'checked' : '' %> />
+
+      <!-- Submit Button -->
+      <button type="submit">Update Profile</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Scheme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/editScheme.css">
+</head>
+<body>
+    <div class="edit-scheme-container">
+        <h2>Edit Scheme</h2>
+        <form action="/admin/edit-scheme/<%= scheme._id %>" method="POST" enctype="multipart/form-data" class="edit-scheme-form">
+            
+            <!-- Scheme Title -->
+            <div class="form-group">
+                <label for="schemeName">Title</label>
+                <input type="text" id="schemeName" name="schemeName" value="<%= scheme.schemeName || '' %>">
+            </div>
+
+            <!-- Scheme Description -->
+            <div class="form-group">
+                <label for="schemeDescription">Description</label>
+                <textarea id="schemeDescription" name="schemeDescription"><%= scheme.schemeDescription || '' %></textarea>
+            </div>
+
+            <!-- Scheme Video Link -->
+            <div class="form-group">
+                <label for="videoLink">Video Link (optional)</label>
+                <input type="url" id="videoLink" name="videoLink" value="<%= scheme.videoLink || '' %>">
+            </div>
+
+            <!-- Eligibility Fields -->
+            <h3>Eligibility Criteria</h3>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select name="gender" id="gender">
+                    <option value="">-- Select Gender --</option>
+                    <option value="male" <%= scheme.gender === 'male' ? 'selected' : '' %>>Male</option>
+                    <option value="female" <%= scheme.gender === 'female' ? 'selected' : '' %>>Female</option>
+                    <option value="other" <%= scheme.gender === 'other' ? 'selected' : '' %>>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="maritalStatus">Marital Status</label>
+                <select name="maritalStatus" id="maritalStatus">
+                    <option value="">-- Select Marital Status --</option>
+                    <option value="single" <%= scheme.maritalStatus === 'single' ? 'selected' : '' %>>Single</option>
+                    <option value="married" <%= scheme.maritalStatus === 'married' ? 'selected' : '' %>>Married</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="income">Income</label>
+                <input type="number" id="income" name="income" value="<%= scheme.income || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation</label>
+                <input type="text" id="occupation" name="occupation" value="<%= scheme.occupation || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="educationLevel">Education Level</label>
+                <input type="text" id="educationLevel" name="educationLevel" value="<%= scheme.educationLevel || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" value="<%= scheme.state || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="ruralOrUrban">Rural or Urban</label>
+                <select name="ruralOrUrban" id="ruralOrUrban">
+                    <option value="">-- Select --</option>
+                    <option value="rural" <%= scheme.ruralOrUrban === 'rural' ? 'selected' : '' %>>Rural</option>
+                    <option value="urban" <%= scheme.ruralOrUrban === 'urban' ? 'selected' : '' %>>Urban</option>
+                </select>
+            </div>
+
+            <!-- Booleans as checkboxes -->
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="hasGirlChild" <%= scheme.hasGirlChild ? 'checked' : '' %>> Has Girl Child
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="isFarmer" <%= scheme.isFarmer ? 'checked' : '' %>> Is Farmer
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="isPregnantOrMother" <%= scheme.isPregnantOrMother ? 'checked' : '' %>> Is Pregnant or Mother
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="isDisabled" <%= scheme.isDisabled ? 'checked' : '' %>> Is Disabled
+                </label>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="form-group">
+                <label for="image">Upload Scheme Image (optional)</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+
+            <button type="submit">Update Scheme</button>
+        </form>
+
+        <div class="back-link">
+            <a href="/admin/dashboard">← Back to Admin Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

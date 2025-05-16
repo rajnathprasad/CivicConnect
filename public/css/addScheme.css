@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1e272e; /* Dark background */
+    color: #f0f0f0; /* Light text */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container */
+.add-scheme-container {
+    background-color: #2c3e50; /* Darker container background */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #81ecec; /* Teal title */
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+
+/* Form */
+.add-scheme-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+/* Labels */
+.form-group label {
+    color: #f0f0f0;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Inputs and Textarea */
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group textarea,
+.form-group select {
+    padding: 12px 16px;
+    border: 1px solid #4a5d73;
+    border-radius: 6px;
+    background-color: #34495e;
+    color: #f0f0f0;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Input/textarea focus effect */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #81ecec;
+    box-shadow: 0 0 5px rgba(129, 236, 236, 0.5);
+}
+
+/* Select dropdown style */
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+}
+
+/* Checkboxes */
+.form-group input[type="checkbox"] {
+    accent-color: #81ecec;
+    transform: scale(1.2);
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Wrap checkbox label and input neatly */
+.form-group label[for*="is"],
+.form-group label[for*="has"] {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+}
+
+/* Submit button */
+button[type="submit"],
+.add-button {
+    margin-top: 20px;
+    padding: 14px 24px;
+    background-color: #81ecec;
+    color: #2c3e50;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover,
+.add-button:hover {
+    background-color: #63cdda;
+    transform: scale(1.03);
+}
+
+/* Back link */
+.back-link {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.back-link a {
+    color: #a7b1bd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+    color: #f0f0f0;
+}

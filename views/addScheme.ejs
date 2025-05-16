@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Scheme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/addScheme.css">
+</head>
+<body>
+    <div class="add-scheme-container">
+        <h2>Add New Scheme</h2>
+
+        <!-- Corrected form action -->
+        <form action="/admin/add-scheme" method="POST" enctype="multipart/form-data" class="add-scheme-form">
+            <div class="form-group">
+                <label for="schemeName">Title</label>
+                <input type="text" id="schemeName" name="schemeName" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="schemeDescription">Description</label>
+                <textarea id="schemeDescription" name="schemeDescription" required></textarea>
+            </div>
+        
+            <div class="form-group">
+                <label for="videoLink">Video Link (Optional)</label>
+                <input type="text" id="videoLink" name="videoLink">
+            </div>
+        
+            <div class="form-group">
+                <label for="image">Scheme Image (Optional)</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+        
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select name="gender" id="gender">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label for="maritalStatus">Marital Status</label>
+                <select name="maritalStatus" id="maritalStatus">
+                    <option value="">Select Marital Status</option>
+                    <option value="Married">Married</option>
+                    <option value="Unmarried">Unmarried</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label for="ruralOrUrban">Rural or Urban</label>
+                <select name="ruralOrUrban" id="ruralOrUrban">
+                    <option value="">Select Area</option>
+                    <option value="Rural">Rural</option>
+                    <option value="Urban">Urban</option>
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <input type="hidden" name="hasGirlChild" value="false">
+                <input type="checkbox" name="hasGirlChild" id="hasGirlChild" value="true">
+                <label for="hasGirlChild">Has Girl Child</label>
+            </div>
+        
+            <div class="form-group">
+                <input type="hidden" name="isFarmer" value="false">
+                <input type="checkbox" name="isFarmer" id="isFarmer" value="true">
+                <label for="isFarmer">Is Farmer</label>
+            </div>
+        
+            <div class="form-group">
+                <input type="hidden" name="isPregnantOrMother" value="false">
+                <input type="checkbox" name="isPregnantOrMother" id="isPregnantOrMother" value="true">
+                <label for="isPregnantOrMother">Is Pregnant or Mother</label>
+            </div>
+        
+            <div class="form-group">
+                <input type="hidden" name="isDisabled" value="false">
+                <input type="checkbox" name="isDisabled" id="isDisabled" value="true">
+                <label for="isDisabled">Is Disabled</label>
+            </div>
+        
+            <button type="submit">Add Scheme</button>
+        </form>
+        
+
+        <div class="back-link">
+            <a href="/admin/dashboard">← Back to Admin Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
