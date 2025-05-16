@@ -41,7 +41,7 @@ app.use('/', discussionRoutes);
 
 // Sample Routes
 app.get('/', (req, res) => {
-    res.render('homepage');
+    res.render('auth/auth');
 });
 
 app.get('/profile', (req, res) => {
