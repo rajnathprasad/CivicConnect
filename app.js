@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const methodOverride = require('method-override');
 
+const port = process.env.PORT || 3000;
+
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -52,6 +54,6 @@ app.get('/profile', (req, res) => {
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('MongoDB connected');
-        app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+        app.listen(port, () => console.log(`Server running on ${port}`));
     })
     .catch((err) => console.log(err));
