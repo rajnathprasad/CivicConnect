@@ -1,84 +1,50 @@
-Visit https://civicconnect-3i0j.onrender.com
+# CivicConnect
 
+A citizen-centric web app to discover personalized government schemes in India.  
+By team **TechSmiths**.
 
+🌐 Live: [https://civicconnect-3i0j.onrender.com](https://civicconnect-3i0j.onrender.com)
 
-# Citizen Participation Platform 🏛️
+## 👥 Team TechSmiths
+- Rajnath Prasad (Team Lead)
+- Rishabh Vishwakarma
+- Reshu Patidar
 
-A digital platform that empowers citizens to explore and engage with government schemes. Admins can manage schemes, while users can browse them after logging in.
+---
 
-## ✨ Features
+## 🔍 Features
 
-### 👤 User
-- Sign up and login with encrypted passwords using `bcrypt`
-- View all available government schemes
-- Secure session-based authentication
+- **Admin Panel**: Add, edit, delete government schemes (via login credentials)
+- **User Auth**: Secure login/signup with hashed passwords (bcrypt)
+- **Personalized Dashboard**:
+  - "For You" tab: View schemes relevant to user’s profile (e.g. farmer, disabled, parent of a girl child)
+  - "All Schemes" tab: Browse all schemes
+- **Scheme Details Page**:
+  - YouTube explainer video
+  - Detailed description
+  - Comment section
+  - Integrated chatbot (Gemini API) to resolve doubts
+- **Profile Management**: Users can update info to receive more accurate recommendations
 
-### 🛡️ Admin
-- Admin login with a special flag (`isAdmin`)
-- Admin dashboard to:
-  - View all schemes
-  - Add a new scheme
-  - Edit existing schemes
-  - Delete schemes
+---
 
-## 📂 Tech Stack
+## 🛠️ Tech Stack
 
+- **Frontend**: EJS
 - **Backend**: Node.js, Express.js
-- **Templating**: EJS
-- **Database**: MongoDB with Mongoose
-- **Authentication**: Express-session
-- **Password Security**: bcrypt
-- **Folder Structure**:
-├── models/ ├── routes/ ├── controllers/ ├── views/ ├── public/ ├── app.js └── package.json
+- **Database**: MongoDB
+- **Auth & Utils**: Bcrypt, Multer, Gemini API
 
-bash
-Copy
-Edit
+---
 
-## 🚀 Getting Started
+## 🚀 Future Goals
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/yourusername/citizen-platform.git
-cd citizen-platform
-2. Install dependencies
-bash
-Copy
-Edit
-npm install
-3. Create a .env file
-env
-Copy
-Edit
-MONGODB_URI=your_mongo_connection_string
-SESSION_SECRET=your_secret_key
-4. Run the app
-bash
-Copy
-Edit
-npm start
-Go to: http://localhost:3000
+- Add multi-language support
+- Mobile-first responsive UI
+- Scheme application tracking
 
-👩‍💻 Admin Credentials
-To create an admin:
+---
 
-Register a new user.
+## 📬 Feedback
 
-In MongoDB, set the isAdmin field to true.
-
-js
-Copy
-Edit
-db.users.updateOne({ email: "admin@admin.com" }, { $set: { isAdmin: true } })
-🔐 Security
-Passwords are hashed using bcrypt with 10 salt rounds.
-
-Sessions are used to keep users logged in securely.
-
-🙌 Contributors
-
-Rajnath Prasad
-
-Rishabh Vishwakarma
-
-Reshu Patidar
+We’d love to hear your thoughts! Open an issue or drop a comment on our [live site](https://civicconnect-3i0j.onrender.com).
