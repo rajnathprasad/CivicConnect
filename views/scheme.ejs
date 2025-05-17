@@ -74,12 +74,18 @@
     const chatBox = document.getElementById('chat-box');
     const input = document.getElementById('user-input');
 
-    const chatHistory = [
-      {
-        role: "system",
-        content: `You are an assistant that gives short replies. The user is ${userName}. The scheme is called "${schemeName}" and here is what it's about: "${schemeDescription}". Only respond concisely.`
-      }
-    ];
+    const initialContext = `You are an assistant that gives short replies. The user is ${userName}. The scheme is called "${schemeName}" and here is what it's about: "${schemeDescription}". Only respond concisely.`;
+
+const chatHistory = [
+  {
+    role: "user",
+    content: initialContext
+  },
+  {
+    role: "assistant",
+    content: "Understood."
+  }
+];
 
     function addToChat(sender, text) {
       const el = document.createElement('div');
