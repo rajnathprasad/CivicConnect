@@ -1,4 +1,6 @@
+// controllers/adminController.js
 const Scheme = require("../models/Scheme");
+const { cloudinary } = require("../config/cloudinary");
 
 // Sanitize boolean string values
 const sanitizeBoolean = (val) => val === 'true';
@@ -25,8 +27,6 @@ exports.renderAddSchemeForm = (req, res) => {
 
 // Add New Scheme
 exports.addNewScheme = async (req, res) => {
-  console.log("Uploaded Image:", req.file);
-
   try {
     const {
       schemeName,
@@ -40,6 +40,14 @@ exports.addNewScheme = async (req, res) => {
       ruralOrUrban,
       videoLink
     } = req.body;
+
+    // Determine Cloudinary values from req.file (multer-storage-cloudinary)
+    let imageUrl, imagePublicId;
+    if (req.file) {
+      // common props: req.file.path (url), req.file.filename (public id)
+      imageUrl = req.file.path || req.file.secure_url || req.file.url || req.file.location;
+      imagePublicId = req.file.filename || req.file.public_id || req.file.key;
+    }
 
     const newScheme = new Scheme({
       schemeName,
@@ -56,7 +64,8 @@ exports.addNewScheme = async (req, res) => {
       isFarmer: sanitizeBoolean(req.body.isFarmer),
       isPregnantOrMother: sanitizeBoolean(req.body.isPregnantOrMother),
       isDisabled: sanitizeBoolean(req.body.isDisabled),
-      image: req.file ? "/uploads/" + req.file.filename : undefined
+      imageUrl,
+      imagePublicId
     });
 
     await newScheme.save();
@@ -114,8 +123,23 @@ exports.updateScheme = async (req, res) => {
       isDisabled: sanitizeBoolean(req.body.isDisabled)
     };
 
+    // If new file uploaded: remove old asset (if exists) then store new Cloudinary info
     if (req.file) {
-      updateData.image = "/uploads/" + req.file.filename;
+      const imageUrl = req.file.path || req.file.secure_url || req.file.url || req.file.location;
+      const imagePublicId = req.file.filename || req.file.public_id || req.file.key;
+
+      // fetch current scheme to get previous public id
+      const existing = await Scheme.findById(req.params.id);
+      if (existing && existing.imagePublicId) {
+        try {
+          await cloudinary.uploader.destroy(existing.imagePublicId);
+        } catch (err) {
+          console.warn("Cloudinary: failed to destroy previous image", err);
+        }
+      }
+
+      updateData.imageUrl = imageUrl;
+      updateData.imagePublicId = imagePublicId;
     }
 
     await Scheme.findByIdAndUpdate(req.params.id, updateData, { new: true });
@@ -129,6 +153,18 @@ exports.updateScheme = async (req, res) => {
 // Delete Scheme
 exports.deleteScheme = async (req, res) => {
   try {
+    const scheme = await Scheme.findById(req.params.id);
+    if (!scheme) return res.redirect("/admin/dashboard");
+
+    // delete image from Cloudinary if present
+    if (scheme.imagePublicId) {
+      try {
+        await cloudinary.uploader.destroy(scheme.imagePublicId);
+      } catch (err) {
+        console.warn("Cloudinary: failed to destroy image on delete", err);
+      }
+    }
+
     await Scheme.findByIdAndDelete(req.params.id);
     res.redirect("/admin/dashboard");
   } catch (err) {

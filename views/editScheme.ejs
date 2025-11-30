@@ -107,6 +107,13 @@
             </div>
 
             <!-- Image Upload -->
+             <!-- show current image if exists -->
+            <% if (scheme.imageUrl) { %>
+                <div class="current-image">
+                <p>Current image:</p>
+                <img src="<%= scheme.imageUrl %>" alt="scheme image" style="max-width:200px;display:block;margin-bottom:8px;">
+                </div>
+            <% } %>
             <div class="form-group">
                 <label for="image">Upload Scheme Image (optional)</label>
                 <input type="file" id="image" name="image" accept="image/*">

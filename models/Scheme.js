@@ -1,3 +1,4 @@
+// models/Scheme.js
 const mongoose = require("mongoose");
 
 const schemeSchema = new mongoose.Schema({
@@ -15,10 +16,13 @@ const schemeSchema = new mongoose.Schema({
   isFarmer: { type: Boolean },
   isPregnantOrMother: { type: Boolean },
   isDisabled: { type: Boolean },
-  image: { type: String },
 
-  // Add this:
+  // Cloudinary fields (replaces local path)
+  imageUrl: { type: String },
+  imagePublicId: { type: String },
+
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }]
 });
 
 module.exports = mongoose.model("Scheme", schemeSchema);
+

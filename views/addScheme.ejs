@@ -11,7 +11,6 @@
     <div class="add-scheme-container">
         <h2>Add New Scheme</h2>
 
-        <!-- Corrected form action -->
         <form action="/admin/add-scheme" method="POST" enctype="multipart/form-data" class="add-scheme-form">
             <div class="form-group">
                 <label for="schemeName">Title</label>
@@ -25,7 +24,7 @@
         
             <div class="form-group">
                 <label for="videoLink">Video Link (Optional)</label>
-                <input type="text" id="videoLink" name="videoLink">
+                <input type="url" id="videoLink" name="videoLink" placeholder="https://">
             </div>
         
             <div class="form-group">
@@ -37,8 +36,9 @@
                 <label for="gender">Gender</label>
                 <select name="gender" id="gender">
                     <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="all">All / Other</option>
                 </select>
             </div>
         
@@ -46,10 +46,11 @@
                 <label for="maritalStatus">Marital Status</label>
                 <select name="maritalStatus" id="maritalStatus">
                     <option value="">Select Marital Status</option>
-                    <option value="Married">Married</option>
-                    <option value="Unmarried">Unmarried</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="widowed">Widowed</option>
+                    <option value="other">Other</option>
                 </select>
             </div>
         
@@ -57,8 +58,9 @@
                 <label for="ruralOrUrban">Rural or Urban</label>
                 <select name="ruralOrUrban" id="ruralOrUrban">
                     <option value="">Select Area</option>
-                    <option value="Rural">Rural</option>
-                    <option value="Urban">Urban</option>
+                    <option value="rural">Rural</option>
+                    <option value="urban">Urban</option>
+                    <option value="both">Both</option>
                 </select>
             </div>
         
@@ -89,7 +91,6 @@
             <button type="submit">Add Scheme</button>
         </form>
         
-
         <div class="back-link">
             <a href="/admin/dashboard">← Back to Admin Dashboard</a>
         </div>
