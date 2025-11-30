@@ -30,9 +30,9 @@
         <% if (schemes && schemes.length > 0) { %>
           <% schemes.forEach(scheme => { %>
             <div class="scheme-card">
-              <% if (scheme.image) { %>
-                <img src="<%= scheme.image %>" alt="Scheme Image" class="scheme-thumbnail" />
-
+              <% const src = scheme.imageUrl || scheme.image; %>
+              <% if (src) { %>
+                <img src="<%= src %>" alt="Scheme Image" class="scheme-thumbnail" />
               <% } else { %>
                 <div style="height: 150px; background: #ccc; display: flex; align-items: center; justify-content: center;">
                   <span>No Image</span>
