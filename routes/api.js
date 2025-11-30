@@ -26,12 +26,13 @@ router.post("/gemini-chat", async (req, res) => {
 
     finalPrompt += "\nAssistant:";
 
-    // Try gemini-1.5-flash-latest first
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    // Use gemini-2.0-flash like your working project
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const result = await model.generateContent(finalPrompt);
-    const response = result.response;
-    const reply = response.text();
+    
+    // FIXED: No await before result.response (just like your working code)
+    const reply = result.response.text();
 
     if (!reply) {
       return res.status(500).json({ error: "Gemini returned no text." });
@@ -41,23 +42,10 @@ router.post("/gemini-chat", async (req, res) => {
   } catch (err) {
     console.error("Gemini error:", err);
     
-    if (err.status === 429) {
-      return res.status(429).json({ 
-        error: "Rate limit exceeded", 
-        message: "Please wait a moment and try again."
-      });
-    }
-    
-    if (err.status === 404) {
-      return res.status(500).json({ 
-        error: "Model not found", 
-        message: "The specified Gemini model is not available."
-      });
-    }
-    
     return res.status(500).json({ 
       error: "Gemini request failed", 
-      detail: err.message 
+      detail: err.message,
+      status: err.status
     });
   }
 });
