@@ -2,8 +2,12 @@
 const Scheme = require("../models/Scheme");
 const { cloudinary } = require("../config/cloudinary");
 
-// Sanitize boolean string values
-const sanitizeBoolean = (val) => val === 'true';
+// Robust boolean sanitizer (returns a real boolean)
+const toBoolean = (val) => {
+  if (val === true || val === 'true' || val === '1' || val === 1) return true;
+  if (val === 'on') return true; // some browsers/helpers send "on"
+  return false;
+};
 
 // Render Admin Dashboard
 exports.renderAdminDashboard = async (req, res) => {
@@ -60,10 +64,11 @@ exports.addNewScheme = async (req, res) => {
       state: state || undefined,
       ruralOrUrban: ruralOrUrban || undefined,
       videoLink: videoLink || undefined,
-      hasGirlChild: sanitizeBoolean(req.body.hasGirlChild),
-      isFarmer: sanitizeBoolean(req.body.isFarmer),
-      isPregnantOrMother: sanitizeBoolean(req.body.isPregnantOrMother),
-      isDisabled: sanitizeBoolean(req.body.isDisabled),
+      // store real booleans
+      hasGirlChild: toBoolean(req.body.hasGirlChild),
+      isFarmer: toBoolean(req.body.isFarmer),
+      isPregnantOrMother: toBoolean(req.body.isPregnantOrMother),
+      isDisabled: toBoolean(req.body.isDisabled),
       imageUrl,
       imagePublicId
     });
@@ -83,6 +88,13 @@ exports.renderEditSchemeForm = async (req, res) => {
     if (!scheme) {
       return res.status(404).send("Scheme not found");
     }
+
+    // Coerce stored values to real booleans so EJS 'checked' works reliably
+    scheme.hasGirlChild = toBoolean(scheme.hasGirlChild);
+    scheme.isFarmer = toBoolean(scheme.isFarmer);
+    scheme.isPregnantOrMother = toBoolean(scheme.isPregnantOrMother);
+    scheme.isDisabled = toBoolean(scheme.isDisabled);
+
     res.render("editScheme", { scheme });
   } catch (err) {
     console.error("Error loading scheme for editing:", err);
@@ -117,10 +129,11 @@ exports.updateScheme = async (req, res) => {
       state: state || undefined,
       ruralOrUrban: ruralOrUrban || undefined,
       videoLink: videoLink || undefined,
-      hasGirlChild: sanitizeBoolean(req.body.hasGirlChild),
-      isFarmer: sanitizeBoolean(req.body.isFarmer),
-      isPregnantOrMother: sanitizeBoolean(req.body.isPregnantOrMother),
-      isDisabled: sanitizeBoolean(req.body.isDisabled)
+      // store real booleans
+      hasGirlChild: toBoolean(req.body.hasGirlChild),
+      isFarmer: toBoolean(req.body.isFarmer),
+      isPregnantOrMother: toBoolean(req.body.isPregnantOrMother),
+      isDisabled: toBoolean(req.body.isDisabled)
     };
 
     // If new file uploaded: remove old asset (if exists) then store new Cloudinary info
