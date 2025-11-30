@@ -8,6 +8,9 @@ const genAI = new GoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
+console.log("Server GEMINI_API_KEY starts with:", process.env.GEMINI_API_KEY?.slice(0, 5));
+
+
 // configurable model
 const MODEL = process.env.GEMINI_MODEL || "gemini-2.0-flash";
 
