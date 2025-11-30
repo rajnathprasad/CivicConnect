@@ -3,10 +3,24 @@ const Scheme = require("../models/Scheme");
 const { cloudinary } = require("../config/cloudinary");
 
 // Robust boolean sanitizer (returns a real boolean)
+// Also tolerant to arrays (takes last element), numbers, 'on', 'true', etc.
 const toBoolean = (val) => {
+  if (Array.isArray(val)) {
+    if (val.length === 0) return false;
+    // take the last sent value (hidden input usually comes first, checkbox last)
+    val = val[val.length - 1];
+  }
   if (val === true || val === 'true' || val === '1' || val === 1) return true;
-  if (val === 'on') return true; // some browsers/helpers send "on"
+  if (val === 'on') return true;
+  // sometimes libs use 'yes'/'y'
+  if (typeof val === 'string' && ['yes', 'y'].includes(val.toLowerCase())) return true;
   return false;
+};
+
+// Helper to safely read boolean fields from an object (req.body or a DB doc)
+const getBooleanField = (obj, fieldName) => {
+  if (!obj) return false;
+  return toBoolean(obj[fieldName]);
 };
 
 // Render Admin Dashboard
@@ -48,7 +62,6 @@ exports.addNewScheme = async (req, res) => {
     // Determine Cloudinary values from req.file (multer-storage-cloudinary)
     let imageUrl, imagePublicId;
     if (req.file) {
-      // common props: req.file.path (url), req.file.filename (public id)
       imageUrl = req.file.path || req.file.secure_url || req.file.url || req.file.location;
       imagePublicId = req.file.filename || req.file.public_id || req.file.key;
     }
@@ -64,11 +77,11 @@ exports.addNewScheme = async (req, res) => {
       state: state || undefined,
       ruralOrUrban: ruralOrUrban || undefined,
       videoLink: videoLink || undefined,
-      // store real booleans
-      hasGirlChild: toBoolean(req.body.hasGirlChild),
-      isFarmer: toBoolean(req.body.isFarmer),
-      isPregnantOrMother: toBoolean(req.body.isPregnantOrMother),
-      isDisabled: toBoolean(req.body.isDisabled),
+      // store real booleans (handles array and string inputs)
+      hasGirlChild: getBooleanField(req.body, 'hasGirlChild'),
+      isFarmer: getBooleanField(req.body, 'isFarmer'),
+      isPregnantOrMother: getBooleanField(req.body, 'isPregnantOrMother'),
+      isDisabled: getBooleanField(req.body, 'isDisabled'),
       imageUrl,
       imagePublicId
     });
@@ -90,10 +103,11 @@ exports.renderEditSchemeForm = async (req, res) => {
     }
 
     // Coerce stored values to real booleans so EJS 'checked' works reliably
-    scheme.hasGirlChild = toBoolean(scheme.hasGirlChild);
-    scheme.isFarmer = toBoolean(scheme.isFarmer);
-    scheme.isPregnantOrMother = toBoolean(scheme.isPregnantOrMother);
-    scheme.isDisabled = toBoolean(scheme.isDisabled);
+    // Handles both boolean and string storage shapes
+    scheme.hasGirlChild = getBooleanField(scheme, 'hasGirlChild');
+    scheme.isFarmer = getBooleanField(scheme, 'isFarmer');
+    scheme.isPregnantOrMother = getBooleanField(scheme, 'isPregnantOrMother');
+    scheme.isDisabled = getBooleanField(scheme, 'isDisabled');
 
     res.render("editScheme", { scheme });
   } catch (err) {
@@ -105,6 +119,9 @@ exports.renderEditSchemeForm = async (req, res) => {
 // Update Scheme
 exports.updateScheme = async (req, res) => {
   try {
+    // DEBUG: inspect incoming body to understand shape (remove later)
+    console.log('updateScheme - req.body sample:', req.body);
+
     const {
       schemeName,
       schemeDescription,
@@ -129,11 +146,11 @@ exports.updateScheme = async (req, res) => {
       state: state || undefined,
       ruralOrUrban: ruralOrUrban || undefined,
       videoLink: videoLink || undefined,
-      // store real booleans
-      hasGirlChild: toBoolean(req.body.hasGirlChild),
-      isFarmer: toBoolean(req.body.isFarmer),
-      isPregnantOrMother: toBoolean(req.body.isPregnantOrMother),
-      isDisabled: toBoolean(req.body.isDisabled)
+      // store real booleans (handles arrays and strings)
+      hasGirlChild: getBooleanField(req.body, 'hasGirlChild'),
+      isFarmer: getBooleanField(req.body, 'isFarmer'),
+      isPregnantOrMother: getBooleanField(req.body, 'isPregnantOrMother'),
+      isDisabled: getBooleanField(req.body, 'isDisabled')
     };
 
     // If new file uploaded: remove old asset (if exists) then store new Cloudinary info
