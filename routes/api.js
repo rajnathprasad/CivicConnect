@@ -1,11 +1,11 @@
+// routes/api.js
 const express = require("express");
 const router = express.Router();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Init client with API key - FIXED: Pass API key directly as string
+// FIXED: Pass API key directly as string
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// POST /api/gemini-chat
 router.post("/gemini-chat", async (req, res) => {
   try {
     const { chatHistory } = req.body;
@@ -14,7 +14,7 @@ router.post("/gemini-chat", async (req, res) => {
       return res.status(400).json({ error: "Invalid chat history format" });
     }
 
-    // Convert chat history to proper format
+    // Convert chat history to prompt
     let finalPrompt = "";
 
     chatHistory.forEach((msg) => {
@@ -28,14 +28,12 @@ router.post("/gemini-chat", async (req, res) => {
 
     finalPrompt += "\nAssistant:";
 
-    // Get the model
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    // Use gemini-1.5-flash (stable and reliable)
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // FIXED: Correct way to call generateContent
+    // Generate content
     const result = await model.generateContent(finalPrompt);
-    
-    // FIXED: Correct way to extract text from response
-    const response = await result.response;
+    const response = result.response;
     const reply = response.text();
 
     if (!reply) {
@@ -45,6 +43,15 @@ router.post("/gemini-chat", async (req, res) => {
     res.json({ reply });
   } catch (err) {
     console.error("Gemini error:", err);
+    
+    // Better error handling
+    if (err.status === 429) {
+      return res.status(429).json({ 
+        error: "Rate limit exceeded", 
+        message: "Please wait a moment and try again."
+      });
+    }
+    
     return res.status(500).json({ 
       error: "Gemini request failed", 
       detail: err.message 
