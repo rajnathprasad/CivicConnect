@@ -111,7 +111,7 @@ const chatHistory = [
 
     (async () => {
       const reply = await sendToGemini("Hello");
-      addToChat("TechSmiths", reply);
+      addToChat("Bot", reply);
     })();
 
     input.addEventListener('keypress', async (e) => {
@@ -121,7 +121,7 @@ const chatHistory = [
         addToChat(userName, userMsg);
         input.value = '';
         const reply = await sendToGemini(userMsg);
-        addToChat("TechSmiths", reply);
+        addToChat("Bot", reply);
       }
     });
   </script>
