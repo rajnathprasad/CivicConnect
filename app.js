@@ -39,6 +39,16 @@ app.use(session({
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+
+app.get('/ping', async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.status(200).json({ status: 'ok', message: 'MongoDB is alive' });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
 // Routes
 app.use(authRoutes);
 app.use('/dashboard', dashboardRoutes);
@@ -55,14 +65,6 @@ app.get('/profile', (req, res) => {
     res.redirect('/user/profile');
 });
 
-app.get('/ping', async (req, res) => {
-    try {
-        await mongoose.connection.db.admin().ping();
-        res.status(200).json({ status: 'ok', message: 'MongoDB is alive' });
-    } catch (err) {
-        res.status(500).json({ status: 'error', message: err.message });
-    }
-});
 
 // MongoDB + Server
 mongoose.connect(process.env.MONGO_URI)
