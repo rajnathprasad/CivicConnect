@@ -20,19 +20,18 @@ const app = express();
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // ✅ Required for JSON body parsing
-app.use('/api', apiRoutes); // ✅ Route for Gemini API
+app.use(express.json()); 
+app.use('/api', apiRoutes); 
 app.use(methodOverride('_method'));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret: 'keyboardcat', // use a strong secret in production
+    secret: 'keyboardcat', 
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI, // from your .env file
-        collectionName: 'sessions',     // optional
-        //ttl: 14 * 24 * 60 * 60           // optional: 14 days
+        mongoUrl: process.env.MONGO_URI,
+        collectionName: 'sessions', 
     })
 }));
 
@@ -56,6 +55,15 @@ app.get('/profile', (req, res) => {
     res.redirect('/user/profile');
 });
 
+app.get('/ping', async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.status(200).json({ status: 'ok', message: 'MongoDB is alive' });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
 // MongoDB + Server
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
@@ -63,3 +71,6 @@ mongoose.connect(process.env.MONGO_URI)
         app.listen(port, () => console.log(`Server running on ${port}`));
     })
     .catch((err) => console.log(err));
+
+
+
