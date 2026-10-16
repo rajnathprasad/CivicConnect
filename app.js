@@ -26,12 +26,20 @@ app.use(methodOverride('_method'));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
+<<<<<<< HEAD
     secret: 'keyboardcat', 
+=======
+    secret: 'keyboardcat',
+>>>>>>> 5728878 (some fixes)
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URI,
+<<<<<<< HEAD
         collectionName: 'sessions', 
+=======
+        collectionName: 'sessions',
+>>>>>>> 5728878 (some fixes)
     })
 }));
 
@@ -65,6 +73,18 @@ app.get('/profile', (req, res) => {
     res.redirect('/user/profile');
 });
 
+<<<<<<< HEAD
+=======
+// Ping route
+app.get('/ping', async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.status(200).json({ status: 'ok', message: 'MongoDB is alive' });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+>>>>>>> 5728878 (some fixes)
 
 // MongoDB + Server
 mongoose.connect(process.env.MONGO_URI)
@@ -72,7 +92,11 @@ mongoose.connect(process.env.MONGO_URI)
         console.log('MongoDB connected');
         app.listen(port, () => console.log(`Server running on ${port}`));
     })
+<<<<<<< HEAD
     .catch((err) => console.log(err));
 
 
 
+=======
+    .catch((err) => console.log(err));
+>>>>>>> 5728878 (some fixes)

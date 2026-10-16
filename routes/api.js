@@ -10,7 +10,7 @@ const genAI = new GoogleGenAI({
 
 console.log("Server GEMINI_API_KEY starts with:", process.env.GEMINI_API_KEY?.slice(0, 5));
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
 router.post("/gemini-chat", async (req, res) => {
   try {
